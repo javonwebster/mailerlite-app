@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+    ApiKeyController::class, 'edit'
+])->name('enter-api-key');
+
+Route::get('/subscribers', [
+    SubscriberController::class, 'index'
+])->name('subscriber-index');
+
+Route::get('/subscribers/1/edit', [
+    SubscriberController::class, 'edit'
+])->name('subscriber-edit');
+
+Route::get('/subscribers/create', [
+    SubscriberController::class, 'create'
+])->name('subscriber-create');
+
+Route::get('/subscribers/1/delete', [
+    SubscriberController::class, 'delete'
+])->name('subscriber-delete');
