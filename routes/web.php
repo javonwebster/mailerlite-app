@@ -15,22 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [
-    ApiKeyController::class, 'edit'
-])->name('enter-api-key');
+//API Key routes
+Route::get('/', [ApiKeyController::class, 'view'])->name('manage-api-key');
+Route::post('/', [ApiKeyController::class, 'store']);
 
-Route::get('/subscribers', [
-    SubscriberController::class, 'index'
-])->name('subscriber-index');
-
-Route::get('/subscribers/1/edit', [
-    SubscriberController::class, 'edit'
-])->name('subscriber-edit');
-
-Route::get('/subscribers/create', [
-    SubscriberController::class, 'create'
-])->name('subscriber-create');
-
-Route::get('/subscribers/1/delete', [
-    SubscriberController::class, 'delete'
-])->name('subscriber-delete');
+//Subscriber routes
+Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscriber-index');
+Route::get('/subscribers/1/edit', [SubscriberController::class, 'edit'])->name('subscriber-edit');
+Route::get('/subscribers/create', [SubscriberController::class, 'create'])->name('subscriber-create');
+Route::get('/subscribers/1/delete', [SubscriberController::class, 'delete'])->name('subscriber-delete');

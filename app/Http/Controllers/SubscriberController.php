@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['has.saved.key']);
+    }
+
     public function index(){
         return view('subscriber.index');
     }

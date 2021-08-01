@@ -1,20 +1,20 @@
 <?php
 
+
 namespace Tests\Feature;
 
+use Database\Seeders\KeySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class SubscriberTests extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function test_api_key_page()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(KeySeeder::class);
     }
 
     /**
@@ -25,6 +25,7 @@ class ExampleTest extends TestCase
         $response = $this->get('/subscribers');
 
         $response->assertStatus(200);
+        $content = $response->getContent();
     }
 
     /**
@@ -57,4 +58,5 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals('subscriber deleted',$response->json('message'));
     }
+
 }

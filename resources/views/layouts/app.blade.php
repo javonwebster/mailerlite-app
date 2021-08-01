@@ -12,7 +12,7 @@
     <nav class="p-6 bg-white flex justify-between mb-6">
         <ul class="flex items-center">
             <li>
-                <a href="{{ route('enter-api-key') }}" class="p-3">Enter API Key</a>
+                <a href="{{ route('manage-api-key') }}" class="p-3">Enter API Key</a>
             </li>
             <li>
                 <a href="{{ route('subscriber-index') }}" class="p-3">Manage Subscribers</a>
