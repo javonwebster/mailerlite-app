@@ -5,7 +5,6 @@
         <div class="w-8/12 bg-white p-6 rounded-lg">
             Edit Subscriber
             <br /><br />
-{{--            {{ dd(get_defined_vars()['__data']) }}--}}
             @if(isset($item->error))
                 <p>An error occurred: {{ $item->error->message }}</p>
             @else
@@ -25,8 +24,8 @@
                     <div class="mb-4">
                         <label for="country" class="sr-only">Country</label>
                         <select name="country" id="country" class="bg-gray-100 border-2 w-full p-4 rounded-lg">
-                            @foreach($countries as $country)
-                                <option value="{{ $country }}" {{$currentCountry == $country ? "selected" : ""  }}>{{ $country }}</option>
+                            @foreach($countries as $key => $country)
+                                <option value="{{ $key == 0 ? "" : $country }}" {{$currentCountry == $country ? "selected" : ""  }}>{{ $country }}</option>
                             @endforeach
                         </select>
 

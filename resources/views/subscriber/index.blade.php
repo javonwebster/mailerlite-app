@@ -11,7 +11,13 @@
 {{--        {{ dd(get_defined_vars()['__data']) }}--}}
         <div class="w-8/12 bg-white p-6 rounded-lg">
             Subscribers
-            <br /><br />
+            <br />
+            <br />
+            <button onclick="location.href='{{ route('subscriber-create') }}'" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" type="button">
+                Create Subscriber
+            </button>
+            <br />
+            <br />
             <table id="subscriber-table" class="w-8/12 display">
                 <thead>
                 <tr>
@@ -52,6 +58,7 @@
                 </tbody>
             </table>
         </div>
+        <div></div>
     </div>
 @endsection
 

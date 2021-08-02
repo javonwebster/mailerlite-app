@@ -22,7 +22,7 @@ class ApiKeyController extends Controller
             'api-key' => ['required','string', new ValidApiKey()]
         ]);
 
-        //store to db;
+        //store to db
         $currentKey = DB::table('keys')->whereNotNull('created_at')->first();
         if ($currentKey === null) {
             DB::table('keys')->insert([

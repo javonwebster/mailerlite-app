@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Rules\SubscriberExists;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use MailerLiteApi\Api\Subscribers;
 use MailerLiteApi\MailerLite;
 
@@ -83,7 +85,36 @@ class SubscriberController extends Controller
 
     public function create(){
         $this->initializeAPI();
-        return view('subscriber.create');
+        return view('subscriber.create',[
+            'countries'=>Country::all()
+        ]);
+    }
+
+    public function new(Request $request){
+        $this->initializeAPI();
+        //validate
+        $this->validate($request, [
+            'email' => ['required','email', new SubscriberExists()]
+        ]);
+
+        //save
+        $subscriber = [
+            'email' => $request->get('email'),
+            'name' => $request->get('name',''),
+            'fields' => [
+                'country' => $request->get('country',''),
+            ]
+        ];
+
+        $addedSubscriber = $this->subscribersApi->create($subscriber);
+        if (isset($addedSubscriber->error)){
+            throw ValidationException::withMessages([
+                'email'=>$addedSubscriber->error->message
+            ]);
+        }
+
+        $request->session()->flash('alert-success', 'Subscriber was successful added!');
+        return back();
     }
 
     public function delete($id): \Illuminate\Http\JsonResponse
