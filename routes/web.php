@@ -20,7 +20,13 @@ Route::get('/', [ApiKeyController::class, 'view'])->name('manage-api-key');
 Route::post('/', [ApiKeyController::class, 'store']);
 
 //Subscriber routes
+//List
 Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscriber-index');
-Route::get('/subscribers/1/edit', [SubscriberController::class, 'edit'])->name('subscriber-edit');
+//Edit
+Route::get('/subscribers/{id}/edit', [SubscriberController::class, 'edit'])->name('subscriber-edit');
+Route::put('/subscribers/{id}/edit', [SubscriberController::class, 'update']);
+//Create
 Route::get('/subscribers/create', [SubscriberController::class, 'create'])->name('subscriber-create');
-Route::get('/subscribers/1/delete', [SubscriberController::class, 'delete'])->name('subscriber-delete');
+Route::post('/subscribers/create', [SubscriberController::class, 'new']);
+//Delete
+Route::delete('/subscribers/{id}/delete', [SubscriberController::class, 'delete'])->name('subscriber-delete')->where(['id' => '[0-9]+']);

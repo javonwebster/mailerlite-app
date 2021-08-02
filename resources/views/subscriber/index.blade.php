@@ -11,8 +11,7 @@
 {{--        {{ dd(get_defined_vars()['__data']) }}--}}
         <div class="w-8/12 bg-white p-6 rounded-lg">
             Subscribers
-            <br />
-            <br />
+            <br /><br />
             <table id="subscriber-table" class="w-8/12 display">
                 <thead>
                 <tr>
@@ -22,14 +21,13 @@
                     <th>Subscribe Date</th>
                     <th>Subscribe Time</th>
                     <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
 
                 @foreach ($items as $item)
                 <tr>
-                    <td>{{ $item->email }}</td>
+                    <td><a href="{{ route('subscriber-edit',['id'=>$item->id]) }}">{{ $item->email }}</a></td>
                     <td>{{ $item->name }}</td>
                     @foreach ($item->fields as $field)
                         @if ($field->key == 'country')
@@ -47,7 +45,6 @@
                     @else
                         <td>{{ date('H:i:s', strtotime($item->date_created)) }}</td>
                     @endif
-                    <td>Edit</td>
                     <td>Delete</td>
                 </tr>
                 @endforeach

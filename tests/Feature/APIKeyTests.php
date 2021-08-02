@@ -116,6 +116,7 @@ class APIKeyTests extends TestCase
         $this->assertStringNotContainsString('<div class="text-red-500 mt-2 text-sm">', $content);
 
         $keys = DB::table('keys')->get();
+        $this->assertEquals(1,count($keys->toArray()));
 
     }
 
