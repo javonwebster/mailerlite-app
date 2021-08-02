@@ -190,18 +190,43 @@ class SubscriberTest extends TestCase
         $this->assertStringContainsString('Subscriber was successful added!', $content);
     }
 
-
-
     /**
      * @return void
      * Confirms that a subscriber can be deleted
      */
     public function test_subscriber_delete()
     {
-        $response = $this->delete('/subscribers/1/delete');
+        $subscriber = $this->initializeTestSubscriber();
 
+        $response = $this->get('/subscribers');
+        $response->assertStatus(200);
+
+        $response = $this->delete('/subscribers/'.$subscriber->id.'/delete');
         $response->assertStatus(200);
         $this->assertEquals('subscriber deleted',$response->json('message'));
+
+        //confirm that the subscriber was deleted
+        try {
+            $subscribersApi = (new MailerLite(env('TEST_MAILER_API_KEY')))->subscribers();
+            $subscriber = $subscribersApi->find($this->testSubscriberEmail);
+            $this->assertNotNull($subscriber->error);
+        } catch (\Exception $exception){
+            $this->fail('An error occurred: '.$exception->getMessage());
+        }
+
+    }
+
+    /**
+     * @return void
+     * Confirms that if an invalid id is provided an error message is show to the user
+     */
+    public function test_subscriber_delete_no_exist()
+    {
+        $response = $this->delete('/subscribers/1234/delete');
+
+        $response->assertStatus(404);
+        $this->assertEquals('Subscriber not found',$response->json('message'));
+        $this->assertEquals(123,$response->json('code'));
     }
 
 }

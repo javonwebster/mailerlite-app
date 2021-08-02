@@ -120,6 +120,16 @@ class SubscriberController extends Controller
     public function delete($id): \Illuminate\Http\JsonResponse
     {
         $this->initializeAPI();
+        $response = $this->subscribersApi->delete($id);
+        if (isset($response)) {
+            return response()->json(
+                [
+                    'message'=>$response->error->message,
+                    'code'=>$response->error->code
+                ],
+                404
+            );
+        }
         return response()->json(
             [
                 'message'=>'subscriber deleted'
