@@ -3,7 +3,7 @@
 
 namespace Tests\Feature;
 
-use Database\Seeders\KeySeeder;
+use Database\Seeders\KeySeederValid;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class SubscriberTests extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed(KeySeeder::class);
+        $this->seed(KeySeederValid::class);
     }
 
     /**

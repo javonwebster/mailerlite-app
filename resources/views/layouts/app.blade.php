@@ -7,6 +7,7 @@
     <title>Mailer Lite App</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @yield('dataTables')
 </head>
 <body class="bg-gray-200">
     <nav class="p-6 bg-white flex justify-between mb-6">
@@ -20,5 +21,6 @@
         </ul>
     </nav>
     @yield('content')
+    @yield('javascript')
 </body>
 </html>
