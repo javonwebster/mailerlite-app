@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Rules\SubscriberExists;
+use App\Util\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use MailerLiteApi\Api\Subscribers;
+use MailerLiteApi\Common\Collection;
 use MailerLiteApi\MailerLite;
 
 class SubscriberController extends Controller
@@ -35,16 +37,74 @@ class SubscriberController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            //TODO
+            return redirect('/');
         }
+        return null;
+    }
+
+    public function data(Request $request){
+        $this->initializeAPI();
+        $recordsFiltered = $recordsTotal = $this->subscribersApi->get()->count();
+        $columnsList = [
+            'email',
+            'name',
+            'country',
+            'date_subscribe_date',
+            'date_subscribe_time',
+        ];
+
+        $draw = (int) $request->input('draw');
+        $limit = (int) $request->input('length',10);
+        $offset = (int) $request->input('start',0);
+        $field = $columnsList[(int)$request->input('order.0.column',0)];
+        $direction = strtoupper($request->input('order.0.dir','asc'));
+        $query = $request->input('search.value', null);
+
+        if (isset($query)){
+            $subscribers = $this->subscribersApi->search($query);
+            $recordsFiltered = count($subscribers);
+        } else {
+            $subscribers = $this->subscribersApi
+                ->limit($limit)
+                ->offset($offset)
+                ->orderBy($field, $direction)
+                ->get();
+        }
+
+        $subscribers = $subscribers instanceof Collection ? $subscribers->toArray() : $subscribers;
+
+        $data = [];
+        if ($recordsFiltered){
+            foreach ($subscribers as $subscriber){
+                $item = [
+                    'id'=>(string) $subscriber->id,
+                    'email'=>$subscriber->email,
+                    'name'=>$subscriber->name,
+                    'country'=>Helpers::getSubscriberCountry($subscriber),
+                    'date_subscribe_date'=>Helpers::getSubscriberDateSubscribed($subscriber),
+                    'date_subscribe_time'=>Helpers::getSubscriberDateSubscribed($subscriber, true),
+                ];
+                $data[] = $item;
+            }
+        }
+
+        return response()->json(
+            [
+                'data'=>$data,
+                'limit'=>$limit,
+                'offset'=>$offset,
+                'field'=>$field,
+                'direction'=>$direction,
+                'query'=>$query,
+                'draw'=>$draw,
+                'recordsTotal'=>$recordsTotal,
+                'recordsFiltered'=>$recordsFiltered,
+            ]
+        );
     }
 
     public function index(){
-        $this->initializeAPI();
-        $subscribers = $this->subscribersApi->get();
-        return view('subscriber.index',[
-            'items'=>$subscribers->toArray()
-        ]);
+        return view('subscriber.index',);
     }
 
     public function edit($id){

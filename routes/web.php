@@ -22,6 +22,7 @@ Route::post('/', [ApiKeyController::class, 'store']);
 //Subscriber routes
 //List
 Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscriber-index');
+Route::post('/subscribers', [SubscriberController::class, 'data']);
 //Edit
 Route::get('/subscribers/{id}/edit', [SubscriberController::class, 'edit'])->name('subscriber-edit');
 Route::put('/subscribers/{id}/edit', [SubscriberController::class, 'update']);

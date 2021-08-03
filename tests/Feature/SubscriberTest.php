@@ -229,4 +229,71 @@ class SubscriberTest extends TestCase
         $this->assertEquals(123,$response->json('code'));
     }
 
+    /**
+     * @return void
+     * Test the parameters that are sent to the data endpoint, and asserting the response is what we expect
+     * This simulates the ajax calls by datatables
+     */
+    public function test_subscribers_data(){
+        $response = $this->post('/subscribers',[
+            'start'=>'0',
+            'length'=>'10',
+            'order'=>[
+                '0'=>[
+                    'column'=>'0',
+                    'dir'=>'asc',
+                ]
+            ],
+            'search'=>[
+                'value'=>''
+            ]
+        ]);
+        $response->assertStatus(200);
+        $this->assertEquals(10,$response->json('limit'));
+        $this->assertEquals(0,$response->json('offset'));
+        $this->assertEquals('email',$response->json('field'));
+        $this->assertEquals('ASC',$response->json('direction'));
+        $this->assertNull($response->json('query'));
+    }
+
+    /**
+     * Testing where clause on group API
+     * @throws \MailerLiteApi\Exceptions\MailerLiteSdkException
+     */
+    public function test_where_clause_group_api(){
+        $groupsApi = (new MailerLite(env('TEST_MAILER_API_KEY')))->groups();
+        $groups = $groupsApi->where([
+            'active' => [
+                '$gt' => 10
+            ]
+        ])->get();
+        $this->assertEmpty($groups->toArray());
+
+        $groups = $groupsApi->where([
+            'active' => [
+                '$lt' => 2
+            ]
+        ])->get();
+        $this->assertCount(1,$groups->toArray());
+    }
+
+//    /**
+//     * Testing where clause on subscribers API
+//     * @throws \MailerLiteApi\Exceptions\MailerLiteSdkException
+//     */
+//    public function test_where_clause_subscriber_api(){
+//        $this->initializeTestSubscriber();
+//
+//        $subscribersApi = (new MailerLite(env('TEST_MAILER_API_KEY')))->subscribers();
+//
+//        $subscriber = $subscribersApi->where(['date_created'=>'Test Subscriber'])->get();// per docs - https://developers.mailerlite.com/docs/parameters
+//        dd($subscriber);
+//
+//        $subscriber = $subscribersApi->where([
+//            'email' => [
+//                '$like' => $this->testSubscriberEmail
+//            ]
+//        ])->get();
+//    }
+
 }
