@@ -139,7 +139,12 @@ class SubscriberController extends Controller
                 'country'=>$request->get('country'),
             ]
         ];
-        $subscriber = $this->subscribersApi->update($id,$subscriberData);
+        try {
+            $subscriber = $this->subscribersApi->update($id,$subscriberData);
+            $request->session()->flash('alert-success', 'Subscriber was successful updated!');
+        } catch (\Exception $exception) {
+            $request->session()->flash('alert-error', 'An error occurred. Please try again');
+        }
         return back();
     }
 

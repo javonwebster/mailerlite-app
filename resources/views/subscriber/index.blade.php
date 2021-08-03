@@ -45,7 +45,7 @@
                     "processing": '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
                 },
                 "scrollX": true,
-                "lengthMenu": [[2, 25, 50, 100, 500, -1], [2, 25, 50, 100, 500, "All"]],
+                "lengthMenu": [[10, 25, 50, 100, 500, -1], [10, 25, 50, 100, 500, "All"]],
                 "ajax": {
                     "url": "{{ url('subscribers') }}",
                     "dataType": "json",
@@ -75,7 +75,7 @@
                         "searchable": true,
                         render: function ( data, type, row, meta ) {
                             if(type === 'display'){
-                                data = '<a href="/subscribers/' + row.id + '/edit">' + data + '</a>';
+                                data = '<a href="/subscribers/' + row.id + '/edit" style="color: blue;">' + data + '</a>';
                             }
                             return data;
                         }
@@ -84,7 +84,7 @@
                         targets: [5],
                         render: function ( data, type, row, meta ) {
                             if(type === 'display'){
-                                data = '<i class="fa fa-trash" data-id='+ data +'>';
+                                data = '<button class="sub-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-id='+ data +'>DELETE</button>';
                             }
                             return data;
                         }
@@ -93,7 +93,7 @@
             });
 
             // Delete a record
-            $('#subscriber-table tbody').on( 'click', 'i.fa-trash', function () {
+            $('#subscriber-table tbody').on( 'click', 'button.sub-delete', function () {
                 // console.log($(this).attr('data-id'));
                 var subscruberId = $(this).attr('data-id');
                 $.ajax({
