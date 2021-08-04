@@ -34,4 +34,15 @@ TEST_MAILER_API_KEY=your-key-goes-here
 ```
 - Once you have completed the above steps, inside your terminal run ``./vendor/bin/sail test``
 
+### Done?
+
+- When you're done you can run ``./vendor/bin/sail down``
+
+### Troubleshooting
+The benefit of using docker is that it minimizes the chances of something going wrong due to configuration 
+differences on Host machines. However, things can still go wrong.
+If you've used docker before, you may run into an issue where your containers may start and exit unexpectedly. In general,
+the quickest fix is usually to delete any old images and containers to free up sapce(or if you really want to get drastic you can delete all of them).
+To confirm all your containers are up, simply run ``docker ps`` in your terminal.
+
 
