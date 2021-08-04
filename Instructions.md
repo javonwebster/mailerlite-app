@@ -12,11 +12,12 @@
 - Start Docker
 - In your terminal/command line, run: ``cd /mailerlite-app``
 - Then make an ``.env`` file with the same contents of ``.env.example``. 
-- Run ``docker-compose up -d``  (This will pull down all the images and spin up the containers)
-- Then you must enter the container. Run ``docker ps`` and make note of the container name. It should be along the lines of "laravel.test".
-- Using that name run ``docker-compose exec <container-name> bash``
-- Once inside the constainer run ``composer install``
-- Exit the container
+- Run ```docker run --rm \
+  -u "$(id -u):$(id -g)" \
+  -v $(pwd):/opt \
+  -w /opt \
+  laravelsail/php74-composer:latest \
+  composer install --ignore-platform-reqs```
 - In the project directory run the command ``./vendor/bin/sail up -d``
 - In your Database GUI of choice import the **mailerlite_app.sql** file in this repo. You will be able to connect to the database using the following credentials:
 ```
