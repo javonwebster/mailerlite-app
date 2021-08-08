@@ -21,7 +21,6 @@ Password: password
 Port: 3306
 Databse Name: mailerlite_app
 ```
-- Then run ``./vendor/bin/sail composer install`` (This will pull on the packages for the APP)
 - Run ``./vendor/bin/sail npm install``
 - Run ``./vendor/bin/sail npm run dev``
 - If all went well, you should be able to see the APP in your browser at [http://localhost/](http://localhost/)
